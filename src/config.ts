@@ -18,20 +18,36 @@ export type TelegramConfig = {
   chatId: string;
 };
 
-export const appConfigFromEnvironment = (): Promise<AppConfig> =>
-  Promise.resolve({
+export const appConfigFromEnvironment = (): Promise<AppConfig> => {
+  const config: AppConfig = {
     serverConfig: {
       port: parseInt(process.env["PORT"] ?? "5000"),
       mockChallengeInfo: process.env["MOCK_CHALLENGE_INFO"] === "true",
     },
     infuraConfig: {
-      url: process.env["INFURA_URL"] as string,
+      url: (process.env["INFURA_URL"] as string) ?? "",
     },
     telegramConfig: {
-      apiKey: process.env["TG_API_KEY"] as string,
-      chatId: process.env["TG_CHAT_ID"] ?? defaultPOHChallengesTelegramChatId,
+      apiKey: (process.env["TELEGRAM_API_KEY"] as string) ?? "",
+      chatId:
+        process.env["TELEGRAM_CHAT_ID"] ?? defaultPOHChallengesTelegramChatId,
     },
-  });
+  };
+
+  if (config.infuraConfig.url === "") {
+    return Promise.reject(
+      new Error("INFURA_URL environment variable must be configured")
+    );
+  }
+
+  if (config.telegramConfig.apiKey === "") {
+    return Promise.reject(
+      new Error("TELEGRAM_API_KEY environment variable must be configured")
+    );
+  }
+
+  return Promise.resolve(config);
+};
 
 const defaultPOHChallengesTelegramChatId = "@PoHChallenges2";
 export const pohContractAddress = "0xC5E9dDebb09Cd64DfaCab4011A0D5cEDaf7c9BDb";
