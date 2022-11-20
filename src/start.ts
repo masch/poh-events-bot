@@ -44,6 +44,10 @@ const main = (configuration: AppConfig) => {
     }
   });
 
+  console.info(
+    `Messages will be posted on ${configuration.telegramConfig.chatId} channel.\nStarting server on ${configuration.serverConfig.port} PORT...\n`
+  );
+
   express()
     .get("/ping", (_, res) => res.send("pong"))
     .listen(configuration.serverConfig.port);
