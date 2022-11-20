@@ -1,0 +1,11 @@
+# Node modules
+node_modules
+
+# Env
+.env
+
+# Generated
+generated
+
+# Build
+dist
