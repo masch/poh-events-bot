@@ -18,30 +18,18 @@ async function main(configuration: AppConfig) {
     provider
   );
 
-  const infoToTelegramMessageData = (challengeInfo: Challenge) => {
-    const tgMessageData: telegram.NewChallengeData = {
-      name: challengeInfo.name,
-      reasonGiven: challengeInfo.challengeReason,
-      pohProfileUrl: challengeInfo.pohProfileLink,
-      klerosCaseUrl: challengeInfo.klerosCaseLink,
-    };
-    return tgMessageData;
-  };
-
-  console.info("== Get challenge info ==");
   const demoChallengeInfo = await fetchChallengeInfo();
 
-  console.info("== Demo challenge telegram ==");
-  const tgMessage = telegram.makeMessage(
-    infoToTelegramMessageData(demoChallengeInfo)
+  console.info("== Demo challenge telegram message ==");
+  console.log(
+    telegram.makeMessage(challengeInfoToTelegramMessageData(demoChallengeInfo))
   );
-  console.log(tgMessage);
 
   if (configuration.serverConfig.postMessageToTelegramOnSanbox) {
     console.info("== Posting message on telegram ==");
     telegram
       .postMessage(configuration.telegramConfig)(
-        infoToTelegramMessageData(demoChallengeInfo)
+        challengeInfoToTelegramMessageData(demoChallengeInfo)
       )
       .then((data) => console.log("Message id created: " + data.id))
       .catch((error) => console.log("Could not send message: " + error));
@@ -53,19 +41,31 @@ async function main(configuration: AppConfig) {
 
   poh.on(poh.filters.SubmissionChallenged(), async (_, __, ___, event) => {
     console.info("Got submission challenge event:", event);
-    const info = await getChallengeInfo(
+    const challengeInfo = await getChallengeInfo(
       event.args._submissionID,
       event.args._requestID.toNumber(),
       event.args._challengeID.toNumber()
     );
-    console.info("Challenge info", info);
+    console.info("Challenge info", challengeInfo);
     console.info(
       "Telegram message",
-      telegram.makeMessage(infoToTelegramMessageData(demoChallengeInfo))
+      telegram.makeMessage(challengeInfoToTelegramMessageData(challengeInfo))
     );
   });
 
+  function challengeInfoToTelegramMessageData(
+    challengeInfo: Challenge
+  ): telegram.NewChallengeData {
+    return {
+      name: challengeInfo.name,
+      reasonGiven: challengeInfo.challengeReason,
+      pohProfileUrl: challengeInfo.pohProfileLink,
+      klerosCaseUrl: challengeInfo.klerosCaseLink,
+    };
+  }
+
   async function fetchChallengeInfo(): Promise<Challenge> {
+    console.info("== Get challenge info ==");
     if (!configuration.serverConfig.mockChallengeInfo) {
       return getChallengeInfo(
         "0x2ee440fd2b5da461a608843f0ad880496d725857".toLowerCase(),
