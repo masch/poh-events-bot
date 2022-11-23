@@ -1,13 +1,16 @@
-# POH Challenge Bot
+# POH Events telegram Bot
 
-A [telegram bot](https://t.me/PoHChallenges2) sends a Telegram message on multiples POH contract events.
-At this time, the following events are implemented:
+A [telegram bot](https://t.me/PoHChallenges) sends a Telegram message on multiples POH contract events.
+
+## The following events are implemented:
 
 - Challenges: Each time a profile is challenged by the members of [Proof of Humanity](https://www.proofofhumanity.id/) (POH). It displays the name of the profile being challenged, a link to the profile in POH and a link to the case in the [Kleros](https://kleros.io/) court.
 
-
 ![Screenshot from 2022-11-19 23-38-43](https://user-images.githubusercontent.com/53308354/202880216-61577193-abf7-4199-8384-4742294f0c96.png)
 
+## Nexts events to implement:
+
+- Remove submission: Each time when a submission is removed from [Proof of Humanity](https://www.proofofhumanity.id/) (POH).
 
 Feel free to open an issue with any suggestions.
 

@@ -71,10 +71,9 @@ const infoQuery = (submissionId: string) => `
 The indexes from the event are used to find the relevant request and challenge, and the evidence URI can be appended to
 `https://ipfs.io` to make a GET request and get a JSON with the reason for the challenge.
 
-For example, for [this](https://t.me/PoHChallenges2/45 "Example message")
-tweet the evidence URI was `/ipfs/QmcsrFzVzSQyTbyKX59bPTun9VH4o41rAi1K4uJRv5wagv/evidence.json`.
+For example, for [this message](https://t.me/PoHChallenges/113 "Example message") the evidence URI was `/ipfs/QmcaxH2XynK1D4A4b39q2jVeyGgKopc79hW52jKiDBG7hn/evidence.json`.
 
-So we fetch the JSON from https://ipfs.io/ipfs/QmcsrFzVzSQyTbyKX59bPTun9VH4o41rAi1K4uJRv5wagv/evidence.json
+So we fetch the JSON from https://ipfs.io/ipfs/QmcaxH2XynK1D4A4b39q2jVeyGgKopc79hW52jKiDBG7hn/evidence.json
 
 ```json
 {
