@@ -6,8 +6,13 @@ export type AppConfig = {
 
 export type ServerConfig = {
   port: number;
+  sandboxConfig: SandboxConfig;
+};
+
+export type SandboxConfig = {
   mockChallengeInfo: boolean;
-  postMessageToTelegramOnSanbox: boolean;
+  postMessageToTelegram: boolean;
+  SubmissionIdToFetch: string;
 };
 
 export type InfuraConfig = {
@@ -23,9 +28,14 @@ export const appConfigFromEnvironment = (): Promise<AppConfig> => {
   const config: AppConfig = {
     serverConfig: {
       port: parseInt(process.env["PORT"] ?? "5000"),
-      mockChallengeInfo: process.env["MOCK_CHALLENGE_INFO"] === "true",
-      postMessageToTelegramOnSanbox:
-        process.env["POST_MESSAGE_TO_TELEGRAM_ON_SANDBOX"] === "true",
+      sandboxConfig: {
+        mockChallengeInfo: process.env["SANBOX_MOCK_CHALLENGE_INFO"] === "true",
+        postMessageToTelegram:
+          process.env["SANDBOX_POST_MESSAGE_TO_TELEGRAM"] === "true",
+        SubmissionIdToFetch:
+          process.env["SANDBOX_SUBMISSION_ID_TO_FETCH"] ??
+          "0xe3432d3a16cfaf59932c3dc809638b8a33a56bf2",
+      },
     },
     infuraConfig: {
       url: (process.env["INFURA_URL"] as string) ?? "",
