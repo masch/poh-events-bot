@@ -18,12 +18,14 @@ type Evidence = {
   description: string;
 };
 
+type EvidencesURI = Array<{
+  URI: string;
+}>;
+
 type Submission = {
   name: string;
   requests: Array<{
-    evidence: Array<{
-      URI: string;
-    }>;
+    evidence: EvidencesURI;
     challenges: Array<{
       disputeID: string;
     }>;
@@ -46,12 +48,13 @@ export const getChallengeInfo = async (
   const challenge = await fetchChallenge();
 
   const submission = challenge.data.submission;
-  const evidenceURI = submission.requests[requestId].evidence[1].URI;
-  const { evidence } = await fetchEvidence(evidenceURI);
+  const evidenceDescription = await fetchEvidenceDescription(
+    submission.requests[requestId].evidence
+  );
 
   return {
     name: submission.name,
-    challengeReason: evidence.description,
+    challengeReason: evidenceDescription,
     pohProfileLink: `${pohProfile_BASEURL}${submissionId.toLowerCase()}`,
     klerosCaseLink: `${klerosCase_BASEURL}${submission.requests[requestId].challenges[challengeId].disputeID}`,
   };
@@ -69,6 +72,22 @@ export const getChallengeInfo = async (
       util.inspect(POHChallenge, { showHidden: false, depth: null })
     );
     return POHChallenge;
+  }
+
+  // Fetch evidence description from the submission evidences URI
+  async function fetchEvidenceDescription(submissionEvidences: EvidencesURI) {
+    // TODO: Check the reason that there is no evidence on challenge event created.
+    // Some submission doesn't have evidence data when the event is created.
+    // If I check it again after a time, the evidence exists.
+    // At the moment, if there is no evidence node, we set a default reason to review manually.
+    let evidenceRegistration = submissionEvidences.find((evidence) =>
+      evidence.URI.endsWith("evidence.json")
+    );
+    if (evidenceRegistration == undefined) {
+      return "No evidence at the moment. Try to fetch it manually in a few seconds.";
+    }
+    const { evidence } = await fetchEvidence(evidenceRegistration.URI);
+    return evidence.description;
   }
 
   // Fetch challenge evidence from IPFS

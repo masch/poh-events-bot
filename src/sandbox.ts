@@ -25,7 +25,7 @@ async function main(configuration: AppConfig) {
     telegram.makeMessage(challengeInfoToTelegramMessageData(demoChallengeInfo))
   );
 
-  if (configuration.serverConfig.postMessageToTelegramOnSanbox) {
+  if (configuration.serverConfig.sandboxConfig.postMessageToTelegram) {
     console.info("== Posting message on telegram ==");
     telegram
       .postMessage(configuration.telegramConfig)(
@@ -65,10 +65,14 @@ async function main(configuration: AppConfig) {
   }
 
   async function fetchChallengeInfo(): Promise<Challenge> {
-    console.info("== Get challenge info ==");
-    if (!configuration.serverConfig.mockChallengeInfo) {
+    console.info(
+      "Geting challenge info: " +
+        configuration.serverConfig.sandboxConfig.SubmissionIdToFetch.toLowerCase() +
+        " ..."
+    );
+    if (!configuration.serverConfig.sandboxConfig.mockChallengeInfo) {
       return getChallengeInfo(
-        "0x2ee440fd2b5da461a608843f0ad880496d725857".toLowerCase(),
+        configuration.serverConfig.sandboxConfig.SubmissionIdToFetch.toLowerCase(),
         0,
         0
       );
