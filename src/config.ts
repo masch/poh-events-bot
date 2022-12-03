@@ -12,7 +12,8 @@ export type ServerConfig = {
 export type SandboxConfig = {
   mockChallengeInfo: boolean;
   postMessageToTelegram: boolean;
-  SubmissionIdToFetch: string;
+  removedSubmissionIdToFetch: string;
+  challengedSubmissionIdToFetch: string;
 };
 
 export type InfuraConfig = {
@@ -32,8 +33,11 @@ export const appConfigFromEnvironment = (): Promise<AppConfig> => {
         mockChallengeInfo: process.env["SANBOX_MOCK_CHALLENGE_INFO"] === "true",
         postMessageToTelegram:
           process.env["SANDBOX_POST_MESSAGE_TO_TELEGRAM"] === "true",
-        SubmissionIdToFetch:
-          process.env["SANDBOX_SUBMISSION_ID_TO_FETCH"] ??
+        removedSubmissionIdToFetch:
+          process.env["SANDBOX_REMOVED_SUBMISSION_ID_TO_FETCH"] ??
+          "0x436b8c83cbaf797ee734c46a918243ef164cfb62",
+        challengedSubmissionIdToFetch:
+          process.env["SANDBOX_CHALLENGED_SUBMISSION_ID_TO_FETCH"] ??
           "0xe3432d3a16cfaf59932c3dc809638b8a33a56bf2",
       },
     },

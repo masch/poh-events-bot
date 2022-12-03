@@ -7,17 +7,44 @@ export type NewChallengeData = {
   klerosCaseUrl: string;
 };
 
+export type NewRemoveSubmissionData = {
+  name: string;
+  reason: string;
+  pohProfileUrl: string;
+};
+
 export type StatusMessage = {
   id: number;
 };
 
 /**
- * Post a message to Telegram based on the configuration and message given.
+ * Post a New Challenge message to Telegram based on the configuration and message given.
  */
-export const postMessage =
+export const postMessageNewChallengeRequested =
   (telegramConfig: TelegramConfig) =>
   async (challengeData: NewChallengeData): Promise<StatusMessage> => {
-    const challengeMessage = makeMessage(challengeData);
+    const message = makeChallengeMessage(challengeData);
+    return postMessage(telegramConfig)(message);
+  };
+
+/**
+ * Post a Remove submission message to Telegram based on the configuration and message given.
+ */
+export const postMessageRemoveSubmission =
+  (telegramConfig: TelegramConfig) =>
+  async (
+    removeSubmissionData: NewRemoveSubmissionData
+  ): Promise<StatusMessage> => {
+    const message = makeRemoveSubmissionMessage(removeSubmissionData);
+    return postMessage(telegramConfig)(message);
+  };
+
+/**
+ * Post a message to Telegram based on the configuration and message given.
+ */
+const postMessage =
+  (telegramConfig: TelegramConfig) =>
+  async (challengeMessage: string): Promise<StatusMessage> => {
     const url = `https://api.telegram.org/bot${
       telegramConfig.apiKey
     }/sendMessage?chat_id=${telegramConfig.chatId}&text=${encodeURIComponent(
@@ -42,9 +69,9 @@ export const postMessage =
   };
 
 /**
- * Makes the string for the Telegram message.
+ * Makes the string for the Telegram challenge message event.
  */
-export const makeMessage = (data: NewChallengeData): string =>
+export const makeChallengeMessage = (data: NewChallengeData): string =>
   `⚖️ ${data.name} has been challenged.
 
 📣「${data.reasonGiven}」
@@ -53,4 +80,18 @@ export const makeMessage = (data: NewChallengeData): string =>
 
 🔎 Follow the case: ${data.klerosCaseUrl}
 
-#proofofhumanity`;
+#challengeRequested`;
+
+/**
+ * Makes the string for the Telegram remove submission message event.
+ */
+export const makeRemoveSubmissionMessage = (
+  data: NewRemoveSubmissionData
+): string =>
+  `☠️ ${data.name} has been removed.
+
+📣「${data.reason}」
+
+👤 View the profile: ${data.pohProfileUrl}
+
+#removeSubmission`;
