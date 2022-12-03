@@ -2,7 +2,11 @@ import * as config from "./config";
 import { AppConfig } from "./config";
 import { ethers } from "ethers";
 import { ProofOfHumanity__factory } from "../generated/poh-ethers-contracts";
-import { Challenge, getChallengeInfo } from "./poh";
+import { getChallengeInfo, getRemoveSubmissionInfo } from "./poh";
+import {
+  challengeToTelegramMessageData,
+  removeSubmissionToTelegramMessageData,
+} from "./tranformer";
 import * as telegram from "./telegram";
 import express from "express";
 
@@ -30,15 +34,38 @@ const main = (configuration: AppConfig) => {
         event.args._requestID.toNumber(),
         event.args._challengeID.toNumber()
       );
-
-      const tgMessageData = infoToTelegramMessageData(challengeInfo);
-
       console.info("Challenge info: ", challengeInfo);
 
-      const messageResult = await telegram.postMessage(
+      const tgMessageData = challengeToTelegramMessageData(challengeInfo);
+      const messageResult = await telegram.postMessageNewChallengeRequested(
         configuration.telegramConfig
       )(tgMessageData);
-      console.info("Message id created: ", messageResult.id);
+
+      console.info(
+        "Message challenged requested id created: ",
+        messageResult.id
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  poh.on(poh.filters.RemoveSubmission(), async (_, __, ___, event) => {
+    try {
+      console.info("Got remove submission event:", event.args);
+      const removeSubmission = await getRemoveSubmissionInfo(
+        event.args._submissionID,
+        event.args._requestID.toNumber()
+      );
+      console.info("Remove submission info: ", removeSubmission);
+
+      const tgMessageData =
+        removeSubmissionToTelegramMessageData(removeSubmission);
+      const messageResult = await telegram.postMessageRemoveSubmission(
+        configuration.telegramConfig
+      )(tgMessageData);
+
+      console.info("Message remove submission id created: ", messageResult.id);
     } catch (err) {
       console.error(err);
     }
@@ -54,15 +81,3 @@ const main = (configuration: AppConfig) => {
 };
 
 config.appConfigFromEnvironment().then(main).catch(console.error);
-
-// -- HELPERS
-
-const infoToTelegramMessageData = (challengeInfo: Challenge) => {
-  const tgMessageData: telegram.NewChallengeData = {
-    name: challengeInfo.name,
-    reasonGiven: challengeInfo.challengeReason,
-    pohProfileUrl: challengeInfo.pohProfileLink,
-    klerosCaseUrl: challengeInfo.klerosCaseLink,
-  };
-  return tgMessageData;
-};
