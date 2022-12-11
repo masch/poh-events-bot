@@ -10,6 +10,9 @@ A [telegram bot](https://t.me/PoHChallenges) sends a Telegram message on multipl
 
 - Remove submission: Each time when a submission is removed from [Proof of Humanity](https://www.proofofhumanity.id/) (POH).
 
+![image](https://user-images.githubusercontent.com/53308354/206924166-7893520b-960f-430d-892b-4b454d228477.png)
+
+
 ## Nexts events to implement:
 
 The events needed by the community. Feel free to open an issue with any suggestions.
