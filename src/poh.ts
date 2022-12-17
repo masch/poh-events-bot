@@ -158,19 +158,34 @@ async function fetchEvidenceDescription(submissionEvidences: EvidencesURI) {
     "Fetching registration: ",
     util.inspect(evidenceRegistration.URI, { showHidden: false, depth: null })
   );
-  const { evidence } = await fetchEvidence(evidenceRegistration.URI);
+  const evidence = await fetchEvidence(evidenceRegistration.URI);
+  if (evidence == undefined) {
+    return "Error getting evidence description";
+  }
   return evidence.description;
 }
 
 // Fetch challenge evidence from IPFS
 async function fetchEvidence(evidenceURI: String) {
-  const IPFSResponse = await fetch(`${ipfs_BASEURL}${evidenceURI}`);
-  const evidence: Evidence = await IPFSResponse.json();
-  console.info(
-    "Response evidence from IPFS API: ",
-    util.inspect(evidence, { showHidden: false, depth: null })
-  );
-  return { evidence };
+  let responseText = "";
+  return await fetch(`${ipfs_BASEURL}${evidenceURI}`)
+    .then((response) => {
+      return response.text();
+    })
+    .then((data) => {
+      responseText = data;
+      console.info(
+        "Fetching evidence IPFS text response: ",
+        util.inspect(responseText, { showHidden: false, depth: null })
+      );
+      const evidence: Evidence = JSON.parse(responseText);
+      return evidence;
+    })
+    .catch((error) => {
+      console.log(
+        "Could parse evidence: " + responseText + " - error: " + error
+      );
+    });
 }
 
 const infoQuery = (submissionId: string) => `
