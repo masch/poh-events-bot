@@ -83,9 +83,42 @@ export const getRemoveSubmissionInfo = async (
 async function fetchPohSubmission(submissionId: string, requestId: number) {
   await new Promise((r) => setTimeout(r, 1000 * 50));
   const pohSubmission = await fetchSubmission(submissionId);
+  console.info(
+    "fetchPohSubmission - data: ",
+    util.inspect(pohSubmission.data, { showHidden: false, depth: null })
+  );
+  console.info(
+    "fetchPohSubmission - data.submission: ",
+    util.inspect(pohSubmission.data.submission, {
+      showHidden: false,
+      depth: null,
+    })
+  );
   const submission = pohSubmission.data.submission;
+  console.info(
+    "fetchPohSubmission - submission.requests: ",
+    util.inspect(submission.requests, {
+      showHidden: false,
+      depth: null,
+    })
+  );
+  console.info(
+    "fetchPohSubmission - request id: ",
+    util.inspect(requestId, {
+      showHidden: false,
+      depth: null,
+    })
+  );
+  console.info(
+    "fetchPohSubmission - request: ",
+    util.inspect(submission.requests[requestId].evidence, {
+      showHidden: false,
+      depth: null,
+    })
+  );
+  const submissionEvidences = submission.requests[requestId].evidence;
   const evidenceDescription = await fetchEvidenceDescription(
-    submission.requests[requestId].evidence
+    submissionEvidences
   );
 
   return {
@@ -121,6 +154,10 @@ async function fetchEvidenceDescription(submissionEvidences: EvidencesURI) {
   if (evidenceRegistration == undefined) {
     return "No evidence at the moment. Try to fetch it manually in a few seconds.";
   }
+  console.info(
+    "Fetching registration: ",
+    util.inspect(evidenceRegistration.URI, { showHidden: false, depth: null })
+  );
   const { evidence } = await fetchEvidence(evidenceRegistration.URI);
   return evidence.description;
 }
