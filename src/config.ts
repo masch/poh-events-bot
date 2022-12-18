@@ -66,7 +66,7 @@ export const appConfigFromEnvironment = (): Promise<AppConfig> => {
   return Promise.resolve(config);
 };
 
-const defaultPOHChallengesTelegramChatId = "@PoHChallengesSandbox";
+const defaultPOHChallengesTelegramChatId = "@PoHChallengesSandbox1";
 export const pohContractAddress = "0xC5E9dDebb09Cd64DfaCab4011A0D5cEDaf7c9BDb";
 export const pohApi_URL =
   "https://api.thegraph.com/subgraphs/name/kleros/proof-of-humanity-mainnet";
