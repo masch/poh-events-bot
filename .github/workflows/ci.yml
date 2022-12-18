@@ -1,26 +1,38 @@
-name: telegram message
+name: Pull request
 on:
-  push:
-    branches:
-      - main
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, ready_for_review, review_requested]
 
 jobs:
 
-  build:
-    name: Build
+  notifications:
+    name: Telegram notifications
     runs-on: ubuntu-latest
     steps:
-      - name: Send telegram message on push request to review or push to master
+      - name: Send telegram message on pull request to review
+        if: github.event.pull_request.merged == false && env.BRANCH != 'main'
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
           message: |
-            ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
+            ${{ github.repository }} repository
+
+            Title: ${{ github.event.pull_request.title }}
+
+            ${{ github.actor }} created new PR: [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) from branch: ${{ github.head_ref }}
             
-            Repository: ${{ github.repository }}
+      - name: Send telegram message on pull request merged to main
+        if: github.event.pull_request.merged == true && env.BRANCH == 'main'
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            ${{ github.repository }} repository
+                        
+            Title: ${{ github.event.pull_request.title }}
             
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            ${{ github.actor }} merged PR: [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) from branch: ${{ github.head_ref }}
