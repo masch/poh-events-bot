@@ -9,7 +9,8 @@ on:
 jobs:
 
   pull_request_to_review:
-  if: github.event.pull_request.merged == false
+    if: github.event.pull_request.merged == false
+    name: Steps to execute when a pull request is ready to review
     runs-on: ubuntu-latest
     steps:
       - name: Send telegram message on pull request to review
@@ -27,8 +28,10 @@ jobs:
             See changes: https://github.com/${{ github.repository }}/pull/${{github.event.number}}
   
   pull_request_merged_to_main:
-  if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
       name: Steps to execute when a pull request is merged to main
+      runs-on: ubuntu-latest
+      steps:
         if: env.BRANCH == 'main'
         uses: appleboy/telegram-action@master
         with:
