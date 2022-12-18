@@ -22,5 +22,13 @@ jobs:
             Commit message: ${{ github.event.commits[0].message }}
 
             Repository: ${{ github.repository }}
+            ${{ github.ref }}
+            ${{ github.workflow }}
+            ${{ github.action }}
+            ${{ github.event }}
+            ${{ github.event.commits }}
+            ${{ github.event.name }}
+            ${{ github.event.pash }}
+            ${{ github.workspace }}
             
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
