@@ -19,6 +19,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             ${{ github.actor }} created pull request on ${{ github.repository }} repository. 
+            
             Title: ${{ github.event.pull_request.title }}
             Body: ${{ github.event.pull_request.body }}
             
