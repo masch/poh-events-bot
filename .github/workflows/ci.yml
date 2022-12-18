@@ -23,7 +23,8 @@ jobs:
 
             Repository: ${{ github.repository }}
             ${{ github.event.payload }}
-            ${{ github.event.payload.pull_request }}
-            ${{ github.event.payload.pull_request.title }}
+            ${{ github.event.pull_request }}
+            ${{ github.event.pull_request.title }}
+            ${{ github.event.changes }}
             
             See changes: https://github.com/${{ github.repository }}/pull/${{github.event.number}}
