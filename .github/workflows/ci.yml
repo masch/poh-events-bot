@@ -32,6 +32,6 @@ jobs:
             ${{ github.event.pash }}
             ${{ github.workspace }}
             ${{ github }}
-            ${{ github.number }}
+            ${{ github.event.number }}
             
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
