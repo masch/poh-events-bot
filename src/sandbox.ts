@@ -113,7 +113,7 @@ async function main(configuration: AppConfig) {
       return {
         name: "Gus",
         reason:
-          "Over the past months, someone in control of the account 0x0a32cfcb355d1a0c8e5f73cf33627806a841fc1e received a total of ~250k UBI from 123 addresses registered in PoH. Someone's controlling all these 123 accounts and this is one of them. Please see attached",
+          "Test = Over the past months, someone in control of the account 0x0a32cfcb355d1a0c8e5f73cf33627806a841fc1e received a total of ~250k UBI from 123 addresses registered in PoH. Someone's controlling all these 123 accounts and this is one of them. Please see attached",
         pohProfileLink:
           "https://app.proofofhumanity.id/profile/0xf8fd6890836e2051112b749a9f981b0827050a47",
       };
