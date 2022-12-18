@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send telegram message on pull request to review
-        if: github.event.pull_request.merged == false
+        if: github.event.pull_request.merged == false && github.event.action != 'closed'
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
