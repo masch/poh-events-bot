@@ -10,7 +10,7 @@ jobs:
 
   pull_request_to_review:
   if: github.event.pull_request.merged == false
-    name: Steps to execute when a pull request is ready to review
+    - name: Steps to execute when a pull request is ready to review
     runs-on: ubuntu-latest
     steps:
       - name: Send telegram message on pull request to review
