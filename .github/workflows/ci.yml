@@ -18,8 +18,10 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
           message: |
             ${{ github.repository }} repository
+
             ${{ github.actor }} created new PR: [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) from branch: ${{ github.head_ref }}
             
             Title: ${{ github.event.pull_request.title }}
@@ -31,8 +33,10 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
           message: |
             ${{ github.repository }} repository
+            
             ${{ github.actor }} pull request merged. 
             
             Title: ${{ github.event.pull_request.title }}
