@@ -19,9 +19,9 @@ jobs:
           message: |
             ${{ github.repository }} repository
 
-            Title: ${{ github.event.pull_request.title }}
-
             ${{ github.actor }} created new PR: [#${{ github.event.number }}](${{ github.event.pull_request.html_url }})
+
+            Title: ${{ github.event.pull_request.title }}
       - name: Send telegram message on pull request merged to main
         if: github.event.pull_request.merged == true
         uses: appleboy/telegram-action@master
@@ -31,7 +31,7 @@ jobs:
           format: markdown
           message: |
             ${{ github.repository }} repository
-                        
-            Title: ${{ github.event.pull_request.title }}
             
             ${{ github.actor }} merged PR: [#${{ github.event.number }}](${{ github.event.pull_request.html_url }})
+
+            Title: ${{ github.event.pull_request.title }}
