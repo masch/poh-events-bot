@@ -9,7 +9,7 @@ on:
 jobs:
 
   pull_request:
-    name: Steps to execute when a pull request is ready to review
+    name: Telegram notification
     runs-on: ubuntu-latest
     steps:
       - name: Send telegram message on pull request to review
@@ -39,4 +39,3 @@ jobs:
             Title: ${{ github.event.pull_request.title }}
             
             ${{ github.actor }} merged PR: [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) from branch: ${{ github.head_ref }}
-            
