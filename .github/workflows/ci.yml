@@ -18,20 +18,12 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            ${{ github.actor }} created commit:
+            ${{ github.actor }} created pull request:
             Commit message: ${{ github.event.commits[0].message }}
 
             Repository: ${{ github.repository }}
-            ${{ github.ref }}
-            ${{ github.ref_name }}
-            ${{ github.workflow }}
-            ${{ github.action }}
-            ${{ github.event }}
-            ${{ github.event.commits }}
-            ${{ github.event.name }}
-            ${{ github.event.pash }}
-            ${{ github.workspace }}
-            ${{ github }}
-            ${{ github.event.number }}
+            ${{ github.event.payload }}
+            ${{ github.event.payload.pull_request }}
+            ${{ github.event.payload.pull_request.title }}
             
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            See changes: https://github.com/${{ github.repository }}/pull/${{github.event.number}}
