@@ -23,6 +23,7 @@ jobs:
 
             Repository: ${{ github.repository }}
             ${{ github.ref }}
+            ${{ github.ref_name }}
             ${{ github.workflow }}
             ${{ github.action }}
             ${{ github.event }}
