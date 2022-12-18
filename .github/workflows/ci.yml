@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send telegram message on pull request to review
-        if: github.event.pull_request.merged == false && env.BRANCH != 'main'
+        if: github.event.pull_request.merged == false
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
@@ -24,7 +24,7 @@ jobs:
             ${{ github.actor }} created new PR: [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) from branch: ${{ github.head_ref }}
             
       - name: Send telegram message on pull request merged to main
-        if: github.event.pull_request.merged == true && env.BRANCH == 'main'
+        if: github.event.pull_request.merged == true
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
