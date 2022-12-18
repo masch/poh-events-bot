@@ -18,24 +18,28 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
           message: |
-            **${{ github.repository }}** repository: ${{ github.actor }} created **pull request to review**. 
+            **${{ github.repository }}** repository.
+            User: ${{ github.actor }} created new PR: [#${{ github.event.number }}](${{ github.event.pull_request.html_url }}) from branch: ${{ github.head_ref }}
             
             **Title**: ${{ github.event.pull_request.title }}
 
             **Body**: ${{ github.event.pull_request.body }}
             
-            See changes: https://github.com/${{ github.repository }}/pull/${{github.event.number}}
       - name: Send telegram message on pull request merged to main
         if: github.event.pull_request.merged == true && env.BRANCH == 'main'
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
           message: |
-            ${{ github.repository }} repository: ${{ github.actor }} pull request merged. 
+            ${{ github.repository }} repository.
+            ${{ github.actor }} pull request merged. 
             
             Title: ${{ github.event.pull_request.title }}
             Body: ${{ github.event.pull_request.body }}
             
             See changes: https://github.com/${{ github.repository }}/pull/${{github.event.number}}
+            
