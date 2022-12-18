@@ -19,10 +19,11 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            ${{ github.repository }} repository: ${{ github.actor }} created pull request. 
+            **${{ github.repository }}** repository: ${{ github.actor }} created **pull request to review**. 
             
-            Title: ${{ github.event.pull_request.title }}
-            Body: ${{ github.event.pull_request.body }}
+            **Title**: ${{ github.event.pull_request.title }}
+
+            **Body**: ${{ github.event.pull_request.body }}
             
             See changes: https://github.com/${{ github.repository }}/pull/${{github.event.number}}
       - name: Send telegram message on pull request merged to main
