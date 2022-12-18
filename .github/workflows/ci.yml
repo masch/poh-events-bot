@@ -4,21 +4,39 @@ on:
     branches:
       - main
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, ready_for_review, review_requested]
 
 jobs:
 
-  build:
-    name: Build
+  pull_request_to_review:
+  if: github.event.pull_request.merged == false
+    name: Steps to execute when a pull request is ready to review
     runs-on: ubuntu-latest
     steps:
-      - name: Send telegram message on push request to review or push to master
+      - name: Send telegram message on pull request to review
+        if: env.BRANCH != 'main'
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            ${{ github.actor }} created pull request on ${{ github.repository }} repository. 
+            ${{ github.repository }} repository: ${{ github.actor }} created pull request. 
+            
+            Title: ${{ github.event.pull_request.title }}
+            Body: ${{ github.event.pull_request.body }}
+            
+            See changes: https://github.com/${{ github.repository }}/pull/${{github.event.number}}
+  
+  pull_request_merged_to_main:
+  if: github.event.pull_request.merged == true
+      name: Steps to execute when a pull request is merged to main
+        if: env.BRANCH == 'main'
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.repository }} repository: ${{ github.actor }} pull request merged. 
             
             Title: ${{ github.event.pull_request.title }}
             Body: ${{ github.event.pull_request.body }}
