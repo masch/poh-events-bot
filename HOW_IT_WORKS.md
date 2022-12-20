@@ -5,7 +5,7 @@
 The [PoH contract](https://github.com/Proof-Of-Humanity/Proof-Of-Humanity/blob/master/contracts/ProofOfHumanity.sol#L199)
 has an event specifically for our use case.
 
-```Solidity
+```SolidityTest
 event SubmissionChallenged(address indexed _submissionID, uint indexed _requestID, uint _challengeID);
 ```
 
