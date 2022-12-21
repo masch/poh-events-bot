@@ -1,4 +1,4 @@
-# POH Events telegram Bot
+# POH Events telegram Bot (TEST)
 
 A [telegram bot](https://t.me/PoHChallenges) sends a Telegram message on multiples POH contract events.
 
